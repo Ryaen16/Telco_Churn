@@ -4,8 +4,10 @@ import streamlit as st
 import pickle
 import joblib
 
+from xgboost import XGBClassifier
 
-model = joblib.load("xgb_model.pkl")
+model = XGBClassifier()
+model.load_model("xgboost_best_model.json")
 scaler = joblib.load("scaler.pkl")
 
 
@@ -95,13 +97,9 @@ with st.expander("📋 Customer Input Encoded After Scaling"):
 #prediction = model.predict(input_encoded)[0]
 #probability = model.predict_proba(input_encoded)[0][1]
 
-if st.button("Predict Churn"):
-
-
-
+if st.button("Predict") :
     prediction = model.predict(input_encoded)
     prediction_proba = model.predict_proba(input_encoded)
-
 
 
     st.subheader("🔮 Prediction Result")
@@ -110,6 +108,5 @@ if st.button("Predict Churn"):
 
     st.success(f"Prediction: {labels[prediction[0]]}")
 
-    st.write("No churn Probability : {}".format(prediction_proba[0][0]))
-
-    st.write("Churn Probability : {}".format(prediction_proba[0][1]))
+    st.write("No churn probability {}".format(prediction_proba[0][0]))
+    st.write("Churn probability {}".format(prediction_proba[0][1]))
